@@ -27,5 +27,5 @@ jobs:
             tenant: ""
             architecture: "amd64"
     steps:
-      - name: Build ${{ matrix.package }} (${{ matrix.architecture }})
-        run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant=${{matrix.tenant}} ${{ matrix.package }}
+      - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
+        run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
