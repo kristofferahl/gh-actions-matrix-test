@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_test_publish_amd64:
-    name: Build/Test/Publish amd64
+    name: Build
     runs-on: ubuntu-lates
     strategy:
       matrix:
