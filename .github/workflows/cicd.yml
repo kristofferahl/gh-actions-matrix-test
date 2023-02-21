@@ -29,3 +29,17 @@ jobs:
     steps:
       - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
         run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
+
+  deploy_dev:
+    name: Deploy Dev
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - tenant: "t1"
+            packages: "package-1 package-2 package-3"
+          - tenant: "t2"
+            packages: "package-1 package-2 package-4"
+    steps:
+      - name: Deploy ${{ matrix.tenant }} (packages=${{matrix.packages}})
+        run: echo ./stack deploy --tenant="${{matrix.tenant}}" ${{ matrix.packages }}
