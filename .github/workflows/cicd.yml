@@ -1,0 +1,16 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_test_publish_amd64:
+    name: Build/Test/Publish amd64
+    runs-on: ubuntu-lates
+    strategy:
+      matrix:
+        architecture: ["amd64"]
+    steps:
+      - name: Build ${{ matrix.package }} (${{ matrix.architecture }})
+        run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant=${{matrix.tenant}} ${{ matrix.package }}
