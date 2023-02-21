@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-arm64-json: '[{ "package": "p1", "tenant": "", "architecture": "arm64" },{ "package": "p2", "tenant": "", "architecture": "arm64" },{ "package": "p3", "tenant": "t1", "architecture": "arm64" },{ "package": "p4", "tenant": "t2", "architecture": "arm64" }]'
+    steps:
+      - name: Build package matrix
+        run: echo 'Hello'
 
   build_test_publish_amd64:
     name: Build amd64
