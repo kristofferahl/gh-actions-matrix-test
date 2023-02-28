@@ -24,14 +24,19 @@ jobs:
         include:
           - package: package-1
             tenant: ""
+            architecture: ""
           - package: package-2
             tenant: ""
+            architecture: ""
           - package: package-3
             tenant: "t1"
+            architecture: ""
           - package: package-4
             tenant: "t2"
+            architecture: ""
           - package: package-5
             tenant: ""
+            architecture: ""
     steps:
       - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
         run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
