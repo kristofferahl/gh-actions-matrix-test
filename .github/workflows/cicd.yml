@@ -9,7 +9,7 @@ jobs:
     name: Setup
     runs-on: ubuntu-latest
     outputs:
-      build-arm64-json: '[{ "package": "p1", "tenant": null, "architecture": "arm64" },{ "package": "p2", "tenant": "", "architecture": "arm64" },{ "package": "p3", "tenant": "t1", "architecture": "arm64" },{ "package": "p4", "tenant": "t2", "architecture": "arm64" }]'
+      build: '[{ "package": "p1", "tenant": null, "architecture": null },{ "package": "p2", "tenant": "", "architecture": null },{ "package": "p3", "tenant": "t1", "architecture": null },{ "package": "p4", "tenant": "t2", "architecture": null }]'
     steps:
       - name: Build package matrix
         run: echo 'Hello'
@@ -47,7 +47,8 @@ jobs:
     needs: [setup]
     strategy:
       matrix:
-        include: ${{ fromJSON(needs.setup.outputs.build-arm64-json) }}
+        architecture: ["amd64"]
+        include: ${{ fromJSON(needs.setup.outputs.build) }}
     steps:
       - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
         run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
