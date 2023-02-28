@@ -9,7 +9,7 @@ jobs:
     name: Setup
     runs-on: ubuntu-latest
     outputs:
-      build: '[{ "package": "p1", "tenant": null, "architecture": null },{ "package": "p2", "tenant": "", "architecture": null },{ "package": "p3", "tenant": "t1", "architecture": null },{ "package": "p4", "tenant": "t2", "architecture": null }]'
+      build: '[{ "package": "p1", "tenant": null },{ "package": "p2", "tenant": "" },{ "package": "p3", "tenant": "t1" },{ "package": "p4", "tenant": "t2" }]'
     steps:
       - name: Build package matrix
         run: echo 'Hello'
@@ -18,40 +18,27 @@ jobs:
     name: Build amd64
     runs-on: ubuntu-latest
     needs: [setup]
+    env:
+      architecture: amd64
     strategy:
       matrix:
-        architecture: ["amd64"]
-        include:
-          - package: package-1
-            tenant: ""
-            architecture: ""
-          - package: package-2
-            tenant: ""
-            architecture: ""
-          - package: package-3
-            tenant: "t1"
-            architecture: ""
-          - package: package-4
-            tenant: "t2"
-            architecture: ""
-          - package: package-5
-            tenant: ""
-            architecture: ""
+        include: ${{ fromJSON(needs.setup.outputs.build) }}
     steps:
-      - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
-        run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
+      - name: Build (package=${{ matrix.package }} tenant=${{matrix.tenant}} arch=${{ env.architecture }})
+        run: echo ./stack build --skip-existing-image --architecture="${{ env.architecture }}" --tenant="${{matrix.tenant}}" ${{ matrix.package }}
 
   build_test_publish_arm64:
     name: Build arm64
     runs-on: ubuntu-latest
     needs: [setup]
+    env:
+      architecture: arm64
     strategy:
       matrix:
-        architecture: ["arm64"]
         include: ${{ fromJSON(needs.setup.outputs.build) }}
     steps:
-      - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
-        run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
+      - name: Build (package=${{ matrix.package }} tenant=${{matrix.tenant}} arch=${{ env.architecture }})
+        run: echo ./stack build --skip-existing-image --architecture="${{ env.architecture }}" --tenant="${{matrix.tenant}}" ${{ matrix.package }}
 
   deploy_dev:
     name: Deploy Dev
