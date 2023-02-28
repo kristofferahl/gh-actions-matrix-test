@@ -47,7 +47,7 @@ jobs:
     needs: [setup]
     strategy:
       matrix:
-        architecture: ["amd64"]
+        architecture: ["arm64"]
         include: ${{ fromJSON(needs.setup.outputs.build) }}
     steps:
       - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
