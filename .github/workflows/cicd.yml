@@ -20,22 +20,18 @@ jobs:
     needs: [setup]
     strategy:
       matrix:
+        architecture: ["amd64"]
         include:
           - package: package-1
             tenant: ""
-            architecture: "amd64"
           - package: package-2
             tenant: ""
-            architecture: "amd64"
           - package: package-3
             tenant: "t1"
-            architecture: "amd64"
           - package: package-4
             tenant: "t2"
-            architecture: "amd64"
           - package: package-5
             tenant: ""
-            architecture: "amd64"
     steps:
       - name: Build ${{ matrix.package }} (tenant=${{matrix.tenant}} arch=${{ matrix.architecture }})
         run: echo ./stack build --skip-existing-image --architecture=${{ matrix.architecture }} --tenant="${{matrix.tenant}}" ${{ matrix.package }}
