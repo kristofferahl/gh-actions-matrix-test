@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tenants: ${{ fromJSON(needs.setup.outputs.tenants) }}
+        tenants: ${{ fromJSON(needs.setup.outputs.tenants-dev) }}
     steps:
       - name: Setup ${{ matrix.tenant }}
         run: echo ./stack tenants setup --tenant="${{matrix.tenant}}"
