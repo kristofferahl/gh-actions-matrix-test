@@ -58,6 +58,7 @@ jobs:
   setup_dev_tenants:
     name: Setup Dev tenants
     runs-on: ubuntu-latest
+    needs: [setup]
     strategy:
       matrix:
         tenants: ${{ fromJSON(needs.setup.outputs.tenants-dev) }}
