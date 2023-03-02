@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build: '[{ "package": "p1", "tenant": null },{ "package": "p2", "tenant": "" },{ "package": "p3", "tenant": "t1" },{ "package": "p4", "tenant": "t2" }]'
+      tenants-dev: '[]'
     steps:
       - name: Build package matrix
         run: echo 'Hello'
@@ -53,3 +54,13 @@ jobs:
     steps:
       - name: Deploy ${{ matrix.tenant }} (packages=${{matrix.packages}})
         run: echo ./stack deploy --tenant="${{matrix.tenant}}" ${{ matrix.packages }}
+        
+  setup_dev_tenants:
+    name: Setup Dev tenants
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tenants: ${{ fromJSON(needs.setup.outputs.tenants) }}
+    steps:
+      - name: Setup ${{ matrix.tenant }}
+        run: echo ./stack tenants setup --tenant="${{matrix.tenant}}"
